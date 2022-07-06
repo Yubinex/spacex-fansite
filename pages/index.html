@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FanX</title>
+  <link rel="stylesheet" href="../filesystem/css/styles.css">
+  <script src="../filesystem/js/clock.js"></script>
+
+</head>
+
+<body onload="startTime()">
+
+  <div class="container">
+
+    <!-- Navbar Section -->
+    <nav class="navbar">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about-me">About Me</a></li>
+        <li><a href="#media">Media</a></li>
+        <li><a href="#vehicles">Vehicles</a></li>
+        <li><a href="#statistics">Statistics</a></li>
+      </ul>
+    </nav>
+
+    <!-- Page Sections -->
+    <section id="home">
+
+      <h1 class="home-title">SpaceX</h1>
+
+      <div id="clock"></div>
+
+    </section>
+
+    <section id="about-me">
+
+      <h1>About Me</h1>
+
+      <table>
+        <tr>
+          <td>FIRST NAME</td>
+          <td>Jan</td>
+        </tr>
+        <tr>
+          <td>LAST NAME</td>
+          <td>Hauck</td>
+        </tr>
+        <tr>
+          <td>BIRTHDAY</td>
+          <td>16.09.1999</td>
+        </tr>
+        <tr>
+          <td>LIKES</td>
+          <td>Space, Science, Video Games, Programming, The English Language</td>
+        </tr>
+        <tr>
+          <td>PETS</td>
+          <td>One Cat named Meloetta</td>
+        </tr>
+      </table>
+
+      <div>
+        <img src="../filesystem/pictures/Meloetta.jpeg" alt="Meloetta" style="width:128px;height:auto;">
+        <p style="font-size: 1rem;">My cat Meloetta.</p>
+      </div>
+
+    </section>
+
+    <section id="media">
+      <h1>Media</h1>
+
+      <div class="media-container">
+
+        <div class="video-box">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/8C4XRqmXRMM" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <p style="padding: 10px; background-color:rgba(0, 0, 0, 0.3)">Falcon 9 Launches</p>
+        </div>
+
+        <div class="video-box">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/Hb5ZXUeGPHc" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <p style="padding: 10px; background-color:rgba(0, 0, 0, 0.3)">Crew-2 Recap</p>
+        </div>
+
+        <div class="video-box">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/7CZTLogln34" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+          <p style="padding: 10px; background-color:rgba(0, 0, 0, 0.3)">Starship Testflight</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="vehicles">
+      <h1>Vehicles</h1>
+
+      <div class="vehicles-container">
+
+        <a href="../pages/falcon9.html">
+          <div class="vehicle-box">
+            <div class="vehicle-image" style="--src: url(../pictures/Falcon9-500.png)"></div>
+            <button class="btn-vehicle-select">Falcon9</button>
+          </div>
+        </a>
+
+        <a href="../pages/falconheavy.html">
+          <div class="vehicle-box">
+            <div class="vehicle-image" style="--src: url(../pictures/FalconHeavy500.jpeg);"></div>
+            <button class="btn-vehicle-select">Falcon Heavy</button>
+          </div>
+        </a>
+
+        <a href="../pages/dragon.html">
+          <div class="vehicle-box">
+            <div class="vehicle-image" style="--src: url(../pictures/Dragon500.jpg)"></div>
+            <button class="btn-vehicle-select">Dragon</button>
+          </div>
+        </a>
+
+        <a href="../pages/starship.html">
+          <div class="vehicle-box">
+            <div class="vehicle-image" style="--src: url(../pictures/Starship500.jpeg)"></div>
+            <button class="btn-vehicle-select">Starship</button>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section id="statistics">
+
+      <script src="../filesystem/js/chart.min.js"></script>
+
+      <h1>Space Agency Data</h1>
+
+      <div class="chart-info">Click on the COLOR/NAME next to each AGENCY to toggle it's BAR on/off</div>
+
+      <div class="chartdiv" style="width: 50%">
+        <canvas id="myChart" width="640" height="400"></canvas>
+      </div>
+
+      <!-- Getting the data from the JSON files -->
+      <script>
+
+        function loadAgencies(callback) {
+          var http = new XMLHttpRequest();
+          http.open("GET", "../filesystem/json/agencies.json");
+          http.addEventListener("load", function () {
+
+            agency_data = JSON.parse(http.responseText);
+            callback(agency_data.data.agencies);
+
+          })
+          http.send();
+
+        }
+
+        loadAgencies(function (agency_data) {
+
+          console.log(agency_data)
+          const labels = [
+            'Failed Landings',
+            'Failed Launches',
+            'Successful Landings',
+            'Successful Launches',
+            'Total Launches',
+          ];
+
+          /* Create the JavaScript Chart */
+          const data = {
+            labels: labels,
+            datasets: [
+              {
+                label: agency_data[121].name,
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                data: [agency_data[121].failed_landings,
+                agency_data[121].failed_launches,
+                agency_data[121].successful_landings,
+                agency_data[121].successful_launches,
+                agency_data[121].total_launch_count,
+                ],
+              }, {
+                label: agency_data[44].abbrev,
+                backgroundColor: 'rgba(0, 0, 255, 0.7)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                data: [agency_data[44].failed_landings,
+                agency_data[44].failed_launches,
+                agency_data[44].successful_landings,
+                agency_data[44].successful_launches,
+                agency_data[44].total_launch_count,
+                ],
+              }, {
+                label: agency_data[63].abbrev,
+                backgroundColor: 'rgba(255, 255, 255, 0.7)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                data: [agency_data[63].failed_landings,
+                agency_data[63].failed_launches,
+                agency_data[63].successful_landings,
+                agency_data[63].successful_launches,
+                agency_data[63].total_launch_count,
+                ],
+              }, {
+                label: agency_data[147].name,
+                backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                data: [agency_data[147].failed_landings,
+                agency_data[147].failed_launches,
+                agency_data[147].successful_landings,
+                agency_data[147].successful_launches,
+                agency_data[147].total_launch_count,
+                ],
+              }, {
+                label: agency_data[124].abbrev,
+                backgroundColor: 'rgba(204, 204, 0, 0.7)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                data: [agency_data[124].failed_landings,
+                agency_data[124].failed_launches,
+                agency_data[124].successful_landings,
+                agency_data[124].successful_launches,
+                agency_data[124].total_launch_count,
+                ],
+              }, {
+                label: agency_data[141].name,
+                backgroundColor: 'rgba(0, 191, 255, 0.7)',
+                borderColor: 'rgba(0, 0, 0, 1)',
+                data: [agency_data[141].failed_landings,
+                agency_data[141].failed_launches,
+                agency_data[141].successful_landings,
+                agency_data[141].successful_launches,
+                agency_data[141].total_launch_count,
+                ],
+              }
+            ]
+          };
+
+          /* Chart configuration */
+          const config = {
+            type: 'bar',
+            data,
+            options: {
+              plugins: {
+                legend: {
+                  position: 'left',
+                  align: 'start',
+                }
+              }
+            }
+          };
+
+          var myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+          );
+        })
+
+      </script>
+
+    </section>
+  </div>
+</body>
+
+</html>
